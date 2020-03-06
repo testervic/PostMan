@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "3ed92430-e307-4a3f-bbcc-6f37812acebb",
+		"name": "知衣补数据",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "补数据-店铺女装价格带",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+						"exec": [
+							"var r_json = pm.response.json().result;",
+							"var xmysql_req = {",
+							"    \"url\": \"/api/v1-6-0/monitor/trend/price-top\",",
+							"    \"name\": \"店铺女装价格带\",",
+							"    \"request\": pm.request.body.raw,",
+							"    \"data\": JSON.stringify(r_json)",
+							"}",
+							"",
+							"var xmysql_request = {",
+							"    url : \"http://localhost:3000/api/request_history\",",
+							"    method : \"POST\",",
+							"    header: \"Content-Type:application/json\",",
+							"    body : {",
+							"        mode : 'raw',",
+							"        raw : JSON.stringify(xmysql_req)",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(xmysql_request, function (err, response){",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ec6bb761-daa5-42a3-9cf7-cb855f9bdcf9",
+						"exec": [
+							"setTimeout(function(){console.log(\"店铺女装价格带\")}, 1024)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "{{ua}}"
+					},
+					{
+						"key": "Cookie",
+						"type": "text",
+						"value": "{{cookie}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2019-12-30\",\r\n    \"endDate\": \"2020-01-05\",\r\n    \"shopId\": \"113272316\",\r\n    \"entrance\": \"1\",\r\n    \"queryType\": \"monitor\",\r\n    \"rootCategoryId\": \"16\",\r\n    \"categoryId\": \"162205\",\r\n    \"distribution\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1-6-0/monitor/trend/price-top",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1-6-0",
+						"monitor",
+						"trend",
+						"price-top"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "补数据-店铺男装价格带",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+						"exec": [
+							"var r_json = pm.response.json().result;",
+							"var xmysql_req = {",
+							"    \"url\": \"/api/v1-6-0/monitor/trend/price-top\",",
+							"    \"name\": \"店铺男装价格带\",",
+							"    \"request\": pm.request.body.raw,",
+							"    \"data\": JSON.stringify(r_json)",
+							"}",
+							"",
+							"var xmysql_request = {",
+							"    url : \"http://localhost:3000/api/request_history\",",
+							"    method : \"POST\",",
+							"    header: \"Content-Type:application/json\",",
+							"    body : {",
+							"        mode : 'raw',",
+							"        raw : JSON.stringify(xmysql_req)",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(xmysql_request, function (err, response){",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ec6bb761-daa5-42a3-9cf7-cb855f9bdcf9",
+						"exec": [
+							"setTimeout(function(){console.log(\"店铺女装价格带\")}, 1024)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "{{ua}}"
+					},
+					{
+						"key": "Cookie",
+						"type": "text",
+						"value": "{{cookie}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2019-12-30\",\r\n    \"endDate\": \"2020-01-05\",\r\n    \"shopId\": \"113272316\",\r\n    \"entrance\": \"1\",\r\n    \"queryType\": \"monitor\",\r\n    \"rootCategoryId\": \"30\",\r\n    \"categoryId\": \"162205\",\r\n    \"distribution\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1-6-0/monitor/trend/price-top",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1-6-0",
+						"monitor",
+						"trend",
+						"price-top"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "补数据-入库",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"url\": \"https://data.zhiyitech.cn/api/v1-6-0/monitor/trend/price-top\",\r\n    \"name\": \"店铺女装价格带\",\r\n    \"request\": \"{\\\"startDate\\\":\\\"2019-12-30\\\",\\\"endDate\\\":\\\"2020-01-03\\\",\\\"shopId\\\":357434206,\\\"entrance\\\":\\\"1\\\",\\\"queryType\\\":\\\"monitor\\\",\\\"rootCategoryId\\\":\\\"16\\\",\\\"categoryId\\\":50008899,\\\"distribution\\\":1}\",\r\n    \"data\": \"[{\\\"leftPrice\\\":100000,\\\"rightPrice\\\":150000,\\\"sumDaySalesVolumeByRange\\\":96,\\\"sumDaySaleByRange\\\":11736400,\\\"allSalesVolumeByRange\\\":0,\\\"sumDaySalesVolumeByRangeRate\\\":78.04,\\\"sumDaySaleByRangeByRate\\\":83.63,\\\"allSalesVolumeByRangeRate\\\":0,\\\"previousSumDaySalesVolume\\\":null,\\\"previousSumDaySale\\\":null,\\\"previousAllSalesVolume\\\":null,\\\"saleDate\\\":null,\\\"subList\\\":null},{\\\"leftPrice\\\":80000,\\\"rightPrice\\\":90000,\\\"sumDaySalesVolumeByRange\\\":25,\\\"sumDaySaleByRange\\\":2100500,\\\"allSalesVolumeByRange\\\":1,\\\"sumDaySalesVolumeByRangeRate\\\":20.32,\\\"sumDaySaleByRangeByRate\\\":14.96,\\\"allSalesVolumeByRangeRate\\\":25,\\\"previousSumDaySalesVolume\\\":null,\\\"previousSumDaySale\\\":null,\\\"previousAllSalesVolume\\\":null,\\\"saleDate\\\":null,\\\"subList\\\":null},{\\\"leftPrice\\\":90000,\\\"rightPrice\\\":100000,\\\"sumDaySalesVolumeByRange\\\":2,\\\"sumDaySaleByRange\\\":195800,\\\"allSalesVolumeByRange\\\":1,\\\"sumDaySalesVolumeByRangeRate\\\":1.62,\\\"sumDaySaleByRangeByRate\\\":1.39,\\\"allSalesVolumeByRangeRate\\\":25,\\\"previousSumDaySalesVolume\\\":null,\\\"previousSumDaySale\\\":null,\\\"previousAllSalesVolume\\\":null,\\\"saleDate\\\":null,\\\"subList\\\":null}]\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/request_history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"request_history"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

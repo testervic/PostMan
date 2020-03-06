@@ -1,0 +1,982 @@
+{
+	"info": {
+		"_postman_id": "13d78405-e1c6-4372-8873-2367b626f0b7",
+		"name": "知衣数据",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "店铺每日动销率",
+			"item": [
+				{
+					"name": "店铺每日动销率",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var r_arr = r_json.result.resultList;",
+									"var req_data = [];",
+									"for(var i=0; i<r_arr.length; i++){",
+									"    var shop = r_arr[i];",
+									"    req_data[i] = {",
+									"        shopId: shop.shopId,",
+									"        saleRate: shop.saleRate",
+									"    };",
+									"}",
+									"",
+									"",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/monitor-shop/shop-list\",",
+									"    \"name\": \"店铺每日动销率\",",
+									"    \"request\": JSON.stringify(pm.request.url.query),",
+									"    \"data\": JSON.stringify(req_data),",
+									"    \"ext\": data.day",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "453a5c4f-f89f-49fe-a338-3f9a39f51084",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺每日动销率\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/monitor-shop/shop-list?groupId=1356&pageNo=1&startDate={{day}}&endDate={{day}}&rankStatus=1&pageSize=60&groupName=sadad",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"monitor-shop",
+								"shop-list"
+							],
+							"query": [
+								{
+									"key": "groupId",
+									"value": "1356"
+								},
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "startDate",
+									"value": "{{day}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{day}}"
+								},
+								{
+									"key": "rankStatus",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "60"
+								},
+								{
+									"key": "teamFilterStatus",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "groupName",
+									"value": "sadad"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "店铺价格带",
+			"item": [
+				{
+					"name": "店铺女装价格带",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var cid = [121412004,121434004,123216004,162103,162104,162116,1622,162201,162205,1623,1624,162401,162402,162403,162404,162701,162702,162703,1629,1636,50000671,50000697,50000852,50003509,50003510,50003511,50005065,50007068,50008897,50008898,50008899,50008900,50008901,50008903,50008904,50008905,50008906,50010850,50011277,50011404,50011411,50011412,50013194,50013196,50022566,50026651]",
+									"",
+									"",
+									"for(let i=0; i<cid.length; i++){",
+									"    setTimeout(()=> {",
+									"        var req = {",
+									"            \"startDate\": pm.environment.get(\"start\"),",
+									"            \"endDate\": pm.environment.get(\"end\"),",
+									"            \"shopId\": data.shop_outer_id,",
+									"            \"entrance\": \"1\",",
+									"            \"queryType\": \"monitor\",",
+									"            \"rootCategoryId\": \"16\",",
+									"            \"categoryId\": cid[i],",
+									"            \"distribution\": 1",
+									"        }",
+									"        ",
+									"        var request = {",
+									"            url : pm.environment.get(\"host\") + \"/api/v1-6-0/monitor/trend/price-top\",",
+									"            method : \"POST\",",
+									"            header: [\"Content-Type:application/json\",",
+									"                \"User-Agent:\" + pm.environment.get(\"ua\"),",
+									"                \"Cookie:\" + pm.environment.get(\"cookie\")",
+									"            ],",
+									"            body : {",
+									"                mode : 'raw',",
+									"                raw : JSON.stringify(req)",
+									"            }",
+									"        }",
+									"    ",
+									"        pm.sendRequest(request, function (err, response){",
+									"            var r_json = response.json().result;",
+									"            var xmysql_req = {",
+									"                \"url\": request.url,",
+									"                \"name\": \"店铺女装价格带\",",
+									"                \"request\": request.body.raw,",
+									"                \"data\": JSON.stringify(r_json)",
+									"            }",
+									"            var xmysql_request = {",
+									"                url : \"http://localhost:3000/api/request_history\",",
+									"                method : \"POST\",",
+									"                header: \"Content-Type:application/json\",",
+									"                body : {",
+									"                    mode : 'raw',",
+									"                    raw : JSON.stringify(xmysql_req)",
+									"                }",
+									"            }",
+									"            ",
+									"            pm.sendRequest(xmysql_request, function (err, response){",
+									"                ",
+									"            });",
+									"        });",
+									"    }, 1000 + i * 1024)",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ec6bb761-daa5-42a3-9cf7-cb855f9bdcf9",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺女装价格带\")}, 1010)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startDate\": \"{{start}}\",\n    \"endDate\": \"{{end}}\",\n    \"shopId\": \"{{shop_outer_id}}\",\n    \"entrance\": \"1\",\n    \"queryType\": \"monitor\",\n    \"rootCategoryId\": \"16\",\n    \"categoryId\": \"162205\",\n    \"distribution\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1-6-0/monitor/trend/price-top",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-6-0",
+								"monitor",
+								"trend",
+								"price-top"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "店铺男装价格带",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var cid = [124688002,124730001,124732001,3035,50000436,50000557,50001748,50005867,50010158,50010159,50010160,50010167,50010402,50011123,50011127,50011129,50011130,50011153,50011159,50011161,50011165,50011167,50025883,50025884,50025885]",
+									"",
+									"for(let i=0; i<cid.length; i++){",
+									"    ",
+									"    setTimeout(function(){",
+									"        var req = {",
+									"            \"startDate\": pm.environment.get(\"start\"),",
+									"            \"endDate\": pm.environment.get(\"end\"),",
+									"            \"shopId\": data.shop_outer_id,",
+									"            \"entrance\": \"1\",",
+									"            \"queryType\": \"monitor\",",
+									"            \"rootCategoryId\": \"30\",",
+									"            \"categoryId\": cid[i],",
+									"            \"distribution\": 1",
+									"        }",
+									"    ",
+									"        var request = {",
+									"            url : pm.environment.get(\"host\") + \"/api/v1-6-0/monitor/trend/price-top\",",
+									"            method : \"POST\",",
+									"            header: [\"Content-Type:application/json\",",
+									"                \"User-Agent:\" + pm.environment.get(\"ua\"),",
+									"                \"Cookie:\" + pm.environment.get(\"cookie\")",
+									"            ],",
+									"            body : {",
+									"                mode : 'raw',",
+									"                raw : JSON.stringify(req)",
+									"            }",
+									"        }",
+									"    ",
+									"        pm.sendRequest(request, function (err, response){",
+									"            var r_json = response.json().result;",
+									"            var xmysql_req = {",
+									"                \"url\": request.url,",
+									"                \"name\": \"店铺男装价格带\",",
+									"                \"request\": request.body.raw,",
+									"                \"data\": JSON.stringify(r_json)",
+									"            }",
+									"            ",
+									"            var xmysql_request = {",
+									"                url : \"http://localhost:3000/api/request_history\",",
+									"                method : \"POST\",",
+									"                header: \"Content-Type:application/json\",",
+									"                body : {",
+									"                    mode : 'raw',",
+									"                    raw : JSON.stringify(xmysql_req)",
+									"                }",
+									"            }",
+									"            ",
+									"            pm.sendRequest(xmysql_request, function (err, response){",
+									"                ",
+									"            });",
+									"        });",
+									"    }, 1000 + i * 1024);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0b15036a-9f35-477c-b3d8-1e4bef37a663",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺男装价格带\")}, 1010)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startDate\": \"{{start}}\",\n    \"endDate\": \"{{end}}\",\n    \"shopId\": \"{{shop_outer_id}}\",\n    \"entrance\": \"1\",\n    \"queryType\": \"monitor\",\n    \"rootCategoryId\": \"16\",\n    \"categoryId\": \"162205\",\n    \"distribution\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1-6-0/monitor/trend/price-top",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-6-0",
+								"monitor",
+								"trend",
+								"price-top"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "店铺其他",
+			"item": [
+				{
+					"name": "店铺女装销售数据",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/v1-6-0/monitor/trend/category-top\",",
+									"    \"name\": \"店铺女装销售数据\",",
+									"    \"request\": pm.request.body.raw,",
+									"    \"data\": JSON.stringify(r_json)",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "453a5c4f-f89f-49fe-a338-3f9a39f51084",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺女装销售数据\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startDate\": \"{{start}}\",\n    \"endDate\": \"{{end}}\",\n    \"rootCategoryId\": \"16\",\n    \"shopId\": \"{{shop_outer_id}}\",\n    \"entrance\": \"1\",\n    \"queryType\": \"monitor\",\n    \"distribution\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1-6-0/monitor/trend/category-top",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-6-0",
+								"monitor",
+								"trend",
+								"category-top"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "店铺男装销售数据",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/v1-6-0/monitor/trend/category-top\",",
+									"    \"name\": \"店铺男装销售数据\",",
+									"    \"request\": pm.request.body.raw,",
+									"    \"data\": JSON.stringify(r_json)",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6ccd7017-68d0-4816-8efd-7e594a9e0453",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺男装销售数据\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startDate\": \"{{start}}\",\n    \"endDate\": \"{{end}}\",\n    \"rootCategoryId\": \"30\",\n    \"shopId\": \"{{shop_outer_id}}\",\n    \"entrance\": \"1\",\n    \"queryType\": \"monitor\",\n    \"distribution\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1-6-0/monitor/trend/category-top",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-6-0",
+								"monitor",
+								"trend",
+								"category-top"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "店铺上新/销量数据",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/v1-6-2/trend/sale-trend\",",
+									"    \"name\": \"店铺上新/销量数据\",",
+									"    \"request\": pm.request.body.raw,",
+									"    \"data\": JSON.stringify(r_json)",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d922dd76-553d-4076-9832-6420fe588241",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺上新/销量数据\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"shopId\": \"{{shop_outer_id}}\",\n    \"distribution\": 2,\n    \"granularity\": 1,\n    \"sbType\": \"\",\n    \"startDate\": \"{{start}}\",\n    \"endDate\": \"{{end}}\",\n    \"mark\": \"new\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1-6-2/trend/sale-trend",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-6-2",
+								"trend",
+								"sale-trend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "店铺基本信息",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/v1-2-0/shop/info\",",
+									"    \"name\": \"店铺基本信息\",",
+									"    \"request\": JSON.stringify(pm.request.url.query),",
+									"    \"data\": JSON.stringify(r_json)",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ca9339ea-c5a7-4d5a-938d-a4efbe1e21c0",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺基本信息\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1-2-0/shop/info?shopId={{shop_outer_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-2-0",
+								"shop",
+								"info"
+							],
+							"query": [
+								{
+									"key": "shopId",
+									"value": "{{shop_outer_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "店铺女装销量TOP10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/v1-3-0/shop/hot-item-list\",",
+									"    \"name\": \"店铺女装销量TOP10\",",
+									"    \"request\": JSON.stringify(pm.request.url.query),",
+									"    \"data\": JSON.stringify(r_json),",
+									"    \"ext\": 16",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a4b3e146-2a17-4d2d-8a5a-cb1accb689fa",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺女装销量TOP10\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1-3-0/shop/hot-item-list?pageSize=10&rootCategoryId=16&shopId={{shop_outer_id}}&startDate={{start}}&endDate={{end}}&activeParam=2&listTypeStatus=2&saleTypeStatus=1&pageNo=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-3-0",
+								"shop",
+								"hot-item-list"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "rootCategoryId",
+									"value": "16"
+								},
+								{
+									"key": "shopId",
+									"value": "{{shop_outer_id}}"
+								},
+								{
+									"key": "startDate",
+									"value": "{{start}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{end}}"
+								},
+								{
+									"key": "activeParam",
+									"value": "2"
+								},
+								{
+									"key": "listTypeStatus",
+									"value": "2"
+								},
+								{
+									"key": "saleTypeStatus",
+									"value": "1"
+								},
+								{
+									"key": "pageNo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "店铺男装销量TOP10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec2dad7f-a8c1-49be-af25-46f783f3a22f",
+								"exec": [
+									"var r_json = pm.response.json();",
+									"var xmysql_req = {",
+									"    \"url\": \"/api/v1-3-0/shop/hot-item-list\",",
+									"    \"name\": \"店铺男装销量TOP10\",",
+									"    \"request\": JSON.stringify(pm.request.url.query),",
+									"    \"data\": JSON.stringify(r_json),",
+									"    \"ext\": 30",
+									"}",
+									"",
+									"var xmysql_request = {",
+									"    url : \"http://localhost:3000/api/request_history\",",
+									"    method : \"POST\",",
+									"    header: \"Content-Type:application/json\",",
+									"    body : {",
+									"        mode : 'raw',",
+									"        raw : JSON.stringify(xmysql_req)",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(xmysql_request, function (err, response){",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "19d22557-81aa-417a-ab50-5f5365395d49",
+								"exec": [
+									"setTimeout(function(){console.log(\"店铺男装销量TOP10\")}, 1024)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"type": "text",
+								"value": "{{ua}}"
+							},
+							{
+								"key": "Cookie",
+								"type": "text",
+								"value": "{{cookie}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1-3-0/shop/hot-item-list?pageSize=10&rootCategoryId=30&shopId={{shop_outer_id}}&startDate={{start}}&endDate={{end}}&activeParam=2&listTypeStatus=2&saleTypeStatus=1&pageNo=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1-3-0",
+								"shop",
+								"hot-item-list"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "rootCategoryId",
+									"value": "30"
+								},
+								{
+									"key": "shopId",
+									"value": "{{shop_outer_id}}"
+								},
+								{
+									"key": "startDate",
+									"value": "{{start}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{end}}"
+								},
+								{
+									"key": "activeParam",
+									"value": "2"
+								},
+								{
+									"key": "listTypeStatus",
+									"value": "2"
+								},
+								{
+									"key": "saleTypeStatus",
+									"value": "1"
+								},
+								{
+									"key": "pageNo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "3f72470b-cbd4-49a0-8c94-9ac4141cdd67",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "86f5e9d2-0eb8-48c6-aa22-02442f6b1eb4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{test}}/apis/v2.0-auth/login?account=leycloud&password=123456789",
+							"host": [
+								"{{test}}"
+							],
+							"path": [
+								"apis",
+								"v2.0-auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "account",
+									"value": "leycloud"
+								},
+								{
+									"key": "password",
+									"value": "123456789"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "www.leycloud.net/apis/v2.0-auth/login?account=leycloud&password=123456789",
+							"host": [
+								"www",
+								"leycloud",
+								"net"
+							],
+							"path": [
+								"apis",
+								"v2.0-auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "account",
+									"value": "leycloud"
+								},
+								{
+									"key": "password",
+									"value": "123456789"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5515365c-6ea3-45bf-a3e4-d7796a085daf",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7e80f3ea-ef73-435a-94b1-d186288e04af",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.test(\"登录是否成功\", function () {",
+							"    pm.expect(jsonData.successful).to.eql(true);",
+							"});"
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
